@@ -4,37 +4,7 @@ class Book{
 		this.author = author;
 		this.isbn = isbn;
 	}
-}
 
-class UI{
-	addBookToListEvent(e){
-		// Get form values
-		const title = document.getElementById('title').value,
-			  author = document.getElementById('author').value,
-			  isbn = document.getElementById('isbn').value;
-
-		const book = new Book(title, author, isbn);
-
-		// Instantiate UI
-		const ui = new UI();
-
-		// Validation
-		if (title === '' || author === '' || isbn === '') {
-			//Error alert
-			ui.showAlert('Please fill in all fields', 'error');
-		}else{
-			//Add book to list
-			ui.addBookToList(book);
-
-			// Show success
-			ui.showAlert('Book Added!', 'success');
-
-			// Clear fields
-			ui.clearFields();
-		}
-
-		e.preventDefault();
-	}
 	addBookToList(book){
 		const list = document.getElementById('book-list');
 		// Create tr element
@@ -48,6 +18,38 @@ class UI{
 		`;
 		list.appendChild(row);
 	}
+}
+
+class UI{
+	addBookToListEvent(e){
+		// Get form values
+		const title = document.getElementById('title').value,
+			  author = document.getElementById('author').value,
+			  isbn = document.getElementById('isbn').value;
+
+		const book = new Book(title, author, isbn);
+
+		// Instantiate UI
+		// const ui = new UI();
+
+		// Validation
+		if (title === '' || author === '' || isbn === '') {
+			//Error alert
+			ui.showAlert('Please fill in all fields', 'error');
+		}else{
+			//Add book to list
+			book.addBookToList(book);
+
+			// Show success
+			ui.showAlert('Book Added!', 'success');
+
+			// Clear fields
+			ui.clearFields();
+		}
+
+		e.preventDefault();
+	}
+	
 
 	showAlert(message, className){
 		// Create div
