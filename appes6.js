@@ -26,6 +26,9 @@ class UI{
 			//Add book to list
 			ui.addBookToList(book);
 
+			//Add to localstorage
+			Store.addBook(book);
+
 			// Show success
 			ui.showAlert('Book Added!', 'success');
 
@@ -73,6 +76,10 @@ class UI{
 		// Delete Book
 		ui.deleteBook(e.target);
 
+		// Delete from LocalStorage
+		//get the ISBN to remove the item
+		Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+
 		// Show message when deleted
 		ui.showAlert('Book Removed !', 'success');
 
@@ -92,8 +99,55 @@ class UI{
 	}
 }
 
+class Store{
+	static getBook(){
+		let Books;
+		if (localStorage.getItem('books') === null) {
+			books = [];
+		}else{
+			books = JSON.parse(localStorage.getItem('books'));
+		}
+
+		return books;
+	}
+
+
+	static displayBook(){
+		const books = Store.getBook();
+
+		books.forEach(function(book){
+			const ui = new UI();
+
+			//Add book to UI
+			ui.addBookToList(book);
+		});
+	}
+
+	static addBook(book){
+		const books = Store.getBook();
+
+		books.push(book);
+
+		localStorage.setItem('books', JSON.stringify(books));
+	}
+
+	static removeBook(isbn){
+		const books = Store.getBook();
+
+		books.forEach(function(book){
+			if (book.isbn === isbn) {
+				books.splice(index, 1);
+			}
+		});
+
+		localStorage.setItem('books', JSON.stringify(books));
+	}
+}
+
 // Instantiate UI
 const ui = new UI();
+
+document.addEventListener('DOMContentLoaded', Store.displayBooks);
 
 //Event Listener for add book
 document.getElementById('book-form').addEventListener('submit', ui.addBookToListEvent);
